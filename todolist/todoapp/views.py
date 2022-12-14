@@ -1,10 +1,7 @@
 from django.shortcuts import HttpResponse, render
-
+import datetime
 from .forms import TodoForm
 from .models import TodoModel
-
-
-# Del
 
 
 def delete(request):
@@ -14,7 +11,7 @@ def delete(request):
         newtask = TodoModel.objects.filter(id=id)[0]
         newtask.delete()
 
-        return render(request,"modal.html",{"message":"Deleted"})
+        return render(request, "modal.html", {"message": "Deleted"})
 
     if request.GET:
         id = request.GET["id"]
@@ -56,7 +53,6 @@ def update(request):
         print(data)
         data = {'dateoftask': data.dateoftask, 'task': data.task, "description": data.description,
                 "status": data.status}
-
         return render(request, "update.html", {"id": id, "form": TodoForm(initial=data)})
 
     return render(request, "update.html")
@@ -64,7 +60,29 @@ def update(request):
 
 def alltasks(request):
     data = TodoModel.objects.all().order_by('id').reverse()
-    return render(request, "alltasks.html", {"tasks": data})
+    # data=TodoModel.objects.filter(id__gt=4)
+    return render(request, "testinghref.html", {"tasks": data})
+
+
+def previoustask(request):
+    # data = TodoModel.objects.filter().order_by('id') dateoftask
+    # data= TodoModel.objects.filter(id__gt=10)
+    data = TodoModel.objects.filter(dateoftask__lt=datetime.datetime.now()).order_by('dateoftask').reverse()
+    return render(request, "previoustasks.html", {"tasks": data})
+
+
+def futuretask(request):
+    data = TodoModel.objects.filter(dateoftask__gt=datetime.datetime.now()).order_by('dateoftask').reverse()
+    return render(request, "future.html", {"tasks": data})
+
+
+def Between(request):
+    previousdate = datetime.datetime(2022, 1, 1)
+    futuredate = datetime.datetime(2022, 12, 10)
+
+    data = TodoModel.objects.filter(dateoftask__gt=previousdate).filter(dateoftask__lt=futuredate).order_by(
+        'dateoftask').reverse()
+    return render(request, "future.html", {"tasks": data})
 
 
 def form(request):
@@ -76,3 +94,11 @@ def form(request):
             return HttpResponse("Saved")
         return HttpResponse("Not Saved")
     return render(request, "form.html", {"form": TodoForm()})
+
+
+def testalltasks(request):
+    data = TodoModel.objects.all().order_by('id').reverse()
+    # data=TodoModel.objects.filter(id__gt=4)
+    return render(request, "alltasks.html", {"tasks": data})
+
+
