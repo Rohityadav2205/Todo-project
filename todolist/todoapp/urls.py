@@ -12,6 +12,6 @@ path('update/', views.update),
 path('delete/', views.delete),
 path('previoustask/', views.previoustask),
 path('futuretask/', views.futuretask),
-path('Between/', views.Between),
+path('between/', views.between),
 
 ]

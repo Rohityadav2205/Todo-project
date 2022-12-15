@@ -68,21 +68,21 @@ def previoustask(request):
     # data = TodoModel.objects.filter().order_by('id') dateoftask
     # data= TodoModel.objects.filter(id__gt=10)
     data = TodoModel.objects.filter(dateoftask__lt=datetime.datetime.now()).order_by('dateoftask').reverse()
-    return render(request, "previoustasks.html", {"tasks": data})
+    return render(request, "testinghref.html", {"tasks": data})
 
 
 def futuretask(request):
     data = TodoModel.objects.filter(dateoftask__gt=datetime.datetime.now()).order_by('dateoftask').reverse()
-    return render(request, "future.html", {"tasks": data})
+    return render(request, "testinghref.html", {"tasks": data})
 
 
-def Between(request):
+def between(request):
     previousdate = datetime.datetime(2022, 1, 1)
     futuredate = datetime.datetime(2022, 12, 10)
 
     data = TodoModel.objects.filter(dateoftask__gt=previousdate).filter(dateoftask__lt=futuredate).order_by(
         'dateoftask').reverse()
-    return render(request, "future.html", {"tasks": data})
+    return render(request, "testinghref.html", {"tasks": data})
 
 
 def form(request):
@@ -99,6 +99,6 @@ def form(request):
 def testalltasks(request):
     data = TodoModel.objects.all().order_by('id').reverse()
     # data=TodoModel.objects.filter(id__gt=4)
-    return render(request, "alltasks.html", {"tasks": data})
+    return render(request, "testinghref.html", {"tasks": data})
 
 
